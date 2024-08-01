@@ -1,11 +1,11 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require('path');
 
 module.exports = {
-  entry: "./src/index.tsx",
+  entry: './src/index.tsx',
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js",
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -13,32 +13,27 @@ module.exports = {
         test: /\.(js|jsx|ts|tsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
             presets: [
-              "@babel/preset-env",
-              "@babel/preset-react",
-              "@babel/preset-typescript",
+              '@babel/preset-env',
+              '@babel/preset-react',
+              '@babel/preset-typescript',
             ],
           },
         },
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader", "postcss-loader"],
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
     ],
   },
   resolve: {
-    extensions: [".js", ".jsx", ".ts", ".tsx"],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: "./index.html",
-    }),
-  ],
   devServer: {
-    static: path.join(__dirname, "dist"),
+    static: path.join(__dirname, 'dist'),
     compress: true,
     port: 3000,
     historyApiFallback: true,
