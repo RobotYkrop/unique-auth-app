@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import Spinner from '../../common/Spinner/Spinner';
 import Success from '../../common/StatusApi/Success';
 import TextField from '../../common/TextField/TextField';
-import './Register.css';
 import { ROUTES } from '../../../libs/models/routeModels';
+import './Register.css';
 
 const Register: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -14,7 +14,7 @@ const Register: React.FC = () => {
   const [verificationCode, setVerificationCode] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const { register, verify, loading, error, success, step } =
+  const { resetApiState, register, verify, loading, error, success, step } =
     useContext(AuthContext)!;
   const navigate = useNavigate();
 
@@ -38,6 +38,10 @@ const Register: React.FC = () => {
     }
   }, [showSuccess, step, navigate]);
 
+  useEffect(() => {
+    resetApiState
+  }, [])
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div
@@ -58,7 +62,7 @@ const Register: React.FC = () => {
                     label="Email"
                     type="email"
                     placeholder="Enter your email"
-                    value={email}
+                    value={email.trim()}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                   />
@@ -88,7 +92,7 @@ const Register: React.FC = () => {
                     label="Verification Code"
                     type="text"
                     placeholder="Enter the code sent to your email"
-                    value={verificationCode}
+                    value={verificationCode.trim()}
                     onChange={(e) => setVerificationCode(e.target.value)}
                     required
                   />

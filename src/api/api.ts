@@ -3,8 +3,9 @@ import { API_ENDPOINTS } from '../libs/models/apiModels';
 const createResponse = (body: object, status: number) =>
   new Response(JSON.stringify(body), { status });
 
-const handleError = (message: string) => Promise.reject(new Error(message));
-
+const handleError = (message: string, status: number) => {
+  return createResponse({ error: message }, status);
+};
 const handleRegister = async (body: BodyInit) => {
   const { email, password } = JSON.parse(body as string);
 
@@ -12,7 +13,7 @@ const handleRegister = async (body: BodyInit) => {
   const existingUsers = existingUsersJSON ? JSON.parse(existingUsersJSON) : [];
 
   if (existingUsers.some((user: { email: string }) => user.email === email)) {
-    return handleError('Email already registered');
+    return handleError('Email already registered', 400);
   }
 
   existingUsers.push({ email, password });
@@ -35,7 +36,7 @@ const handleLogin = async (body: BodyInit) => {
     return createResponse({ success: 'Login successful' }, 200);
   }
 
-  return handleError('Invalid email or password');
+  return handleError('Invalid email or password', 400);
 };
 
 const handleVerify = async (body: BodyInit) => {
@@ -48,7 +49,7 @@ const handleVerify = async (body: BodyInit) => {
     );
   }
 
-  return handleError('Invalid verification code');
+  return handleError('Invalid verification code', 400);
 };
 
 export const mockFetch = (
@@ -58,7 +59,6 @@ export const mockFetch = (
   return new Promise<Response>((resolve, reject) => {
     setTimeout(async () => {
       const { body, method } = options;
-
       if (body) {
         try {
           if (url === API_ENDPOINTS.REGISTER && method === 'POST') {
@@ -67,14 +67,10 @@ export const mockFetch = (
             resolve(await handleLogin(body));
           } else if (url === API_ENDPOINTS.VERIFY && method === 'POST') {
             resolve(await handleVerify(body));
-          } else {
-            reject(new Error('Not found'));
           }
         } catch (error) {
           reject(error);
         }
-      } else {
-        reject(new Error('Invalid data'));
       }
     }, 2000);
   });

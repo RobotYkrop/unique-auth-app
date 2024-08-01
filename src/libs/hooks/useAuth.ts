@@ -31,15 +31,13 @@ export const useAuth = () => {
       });
 
       const result = await response.json();
-
+      console.log(result)
       if (response.ok) {
         setIsAuthenticated(true);
         setSuccess(result.success);
       } else {
         setError(result.error);
       }
-    } catch (error) {
-      setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -77,8 +75,6 @@ export const useAuth = () => {
       } else {
         setError(result.error);
       }
-    } catch (error) {
-      setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -106,8 +102,6 @@ export const useAuth = () => {
       } else {
         setError(result.error);
       }
-    } catch (error) {
-      setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -133,6 +127,6 @@ export const useAuth = () => {
     register,
     verify,
     logout,
-    resetApiState
+    resetApiState,
   };
 };

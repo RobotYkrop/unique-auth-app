@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, FormEvent } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import Spinner from '../../common/Spinner/Spinner';
 import TextField from '../../common/TextField/TextField';
@@ -13,21 +13,18 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const controls = useAnimation();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    await login(email, password);
+  const navigateAfterAnimation = async () => {
+    await controls.start({ opacity: 0, transition: { duration: 0.5 } });
+    navigate(ROUTES.CONGRATULATIONS);
   };
 
-  useEffect(() => {
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    await login(email, password);
     if (!error && success) {
-      const navigateAfterAnimation = async () => {
-        await controls.start({ opacity: 0, transition: { duration: 0.5 } });
-        navigate(ROUTES.CONGRATULATIONS);
-      };
-
-      navigateAfterAnimation();
+      await navigateAfterAnimation();
     }
-  }, [error, success, navigate, controls]);
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

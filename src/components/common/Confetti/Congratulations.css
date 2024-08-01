@@ -1,17 +1,16 @@
 .congratulations-container {
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f0f4f8;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
 }
 
 .congratulations-content {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
-  z-index: 10;
 }
 
 .congratulations-title {
